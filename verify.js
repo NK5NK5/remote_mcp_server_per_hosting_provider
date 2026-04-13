@@ -18,7 +18,7 @@ const CONTRACT = JSON.parse(
   fs.readFileSync(path.join(__dirname, "component_verification_contract.json"), "utf8")
 );
 
-const MCP_SERVERS_URL = "https://raw.githubusercontent.com/NK5NK5/remote_mcp_hosting_provider_benchmark_pipeline_registry/main/mcp_servers_under_test.json";
+const MCP_SERVERS_URL = "https://raw.githubusercontent.com/mcp-server-hosting-providers-benchmark/pipeline_components_registry/main/mcp_servers_under_test.json";
 const WORKTREE_DIR = path.join(__dirname, ".verify_tmp");
 
 // --- helpers ----------------------------------------------------------------
