@@ -3,6 +3,7 @@
   "verify_script": "node verify.js",
   "verify_schedule": "once a day at 3h UTC",
   "verify_schedule_reason": "Each verify call hits all 8 endpoints (tools/list + tools/call), which warms them up. Running more frequently would prevent cold-start conditions that the benchmark is designed to measure.",
+  "verify_reports_url": "https://api.github.com/repos/mcp-server-hosting-providers-benchmark/mcp_server_per_hosting_provider/git/trees/data?recursive=1",
   "report_output": "data branch — verify_report_TIMESTAMP.json",
   "result_states": ["pass", "fail"],
   "levels": [
@@ -22,7 +23,7 @@
         },
         {
           "id": "registry_has_data_url",
-          "description": "Component entry has a non-empty data_url field"
+          "description": "Component entry has a non-empty component_output_url field"
         },
         {
           "id": "mcp_servers_under_test_accessible",
