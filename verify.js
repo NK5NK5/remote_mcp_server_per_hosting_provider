@@ -18,6 +18,10 @@ const CONTRACT = JSON.parse(
   fs.readFileSync(path.join(__dirname, "component_verification_contract.json"), "utf8")
 );
 
+const COMPONENT_CONTRACT = JSON.parse(
+  fs.readFileSync(path.join(__dirname, "component_contract.json"), "utf8")
+);
+
 const WORKTREE_DIR = path.join(__dirname, ".verify_tmp");
 
 // --- helpers ----------------------------------------------------------------
@@ -105,6 +109,17 @@ function checkDiscoverability() {
   results.push(ok
     ? pass("mcp_servers_under_test_accessible")
     : fail("mcp_servers_under_test_accessible", "mcp_servers_under_test.json not accessible via registry component_output_url"));
+
+  // registry_output_url_matches_contract — divergence detection
+  const contractUrl = COMPONENT_CONTRACT.output_url;
+  const registryUrl = entry?.component_output_url;
+  if (contractUrl && registryUrl) {
+    results.push(contractUrl === registryUrl
+      ? pass("registry_output_url_matches_contract")
+      : fail("registry_output_url_matches_contract", `contract has "${contractUrl}", registry has "${registryUrl}"`));
+  } else {
+    results.push(fail("registry_output_url_matches_contract", `output_url missing — contract: ${contractUrl ?? "absent"}, registry: ${registryUrl ?? "absent"}`));
+  }
 
   return { results, entry };
 }

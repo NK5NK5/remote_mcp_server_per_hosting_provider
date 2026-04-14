@@ -25,6 +25,10 @@
         {
           "id": "mcp_servers_under_test_accessible",
           "description": "mcp_servers_under_test.json is publicly accessible — URL read from registry component_output_url field"
+        },
+        {
+          "id": "registry_output_url_matches_contract",
+          "description": "component_contract.json output_url and registry component_output_url are identical — detects divergence if one is updated without the other"
         }
       ]
     },
