@@ -24,8 +24,7 @@
         },
         {
           "id": "mcp_servers_under_test_accessible",
-          "description": "mcp_servers_under_test.json is publicly accessible from the registry",
-          "url": "https://raw.githubusercontent.com/mcp-server-hosting-providers-benchmark/pipeline_components_registry/main/mcp_servers_under_test.json"
+          "description": "mcp_servers_under_test.json is publicly accessible — URL read from registry component_output_url field"
         }
       ]
     },

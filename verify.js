@@ -18,7 +18,6 @@ const CONTRACT = JSON.parse(
   fs.readFileSync(path.join(__dirname, "component_verification_contract.json"), "utf8")
 );
 
-const MCP_SERVERS_URL = "https://raw.githubusercontent.com/mcp-server-hosting-providers-benchmark/pipeline_components_registry/main/mcp_servers_under_test.json";
 const WORKTREE_DIR = path.join(__dirname, ".verify_tmp");
 
 // --- helpers ----------------------------------------------------------------
@@ -81,12 +80,12 @@ function checkDiscoverability() {
     results.push(fail("registry_accessible", "HTTP request failed or invalid JSON"));
     results.push(fail("registry_has_component_entry", "skipped — registry not accessible"));
     results.push(fail("registry_has_data_url", "skipped — registry not accessible"));
-    results.push(fail("endpoints_json_accessible", "skipped — registry not accessible"));
-    return results;
+    results.push(fail("mcp_servers_under_test_accessible", "skipped — registry not accessible"));
+    return { results, entry: null };
   }
 
   // registry_has_component_entry
-  entry = registry.find((c) => c.name === CONTRACT.component);
+  entry = registry.find((c) => c.component_name === CONTRACT.component);
   if (entry) {
     results.push(pass("registry_has_component_entry"));
   } else {
@@ -94,30 +93,32 @@ function checkDiscoverability() {
   }
 
   // registry_has_data_url
-  if (entry?.data_url) {
+  if (entry?.component_output_url) {
     results.push(pass("registry_has_data_url"));
   } else {
-    results.push(fail("registry_has_data_url", "data_url field missing or empty"));
+    results.push(fail("registry_has_data_url", "component_output_url field missing or empty"));
   }
 
-  // mcp_servers_under_test_accessible
-  const ok = httpOk(CONTRACT.levels[0].checks[3].url);
+  // mcp_servers_under_test_accessible — URL comes from registry entry
+  const outputUrl = entry?.component_output_url;
+  const ok = outputUrl ? httpOk(outputUrl) : false;
   results.push(ok
     ? pass("mcp_servers_under_test_accessible")
-    : fail("mcp_servers_under_test_accessible", "mcp_servers_under_test.json not accessible in registry"));
+    : fail("mcp_servers_under_test_accessible", "mcp_servers_under_test.json not accessible via registry component_output_url"));
 
-  return results;
+  return { results, entry };
 }
 
 // --- level 2 — completeness -------------------------------------------------
 
-function checkCompleteness() {
+function checkCompleteness(entry) {
   const results = [];
   let endpoints = null;
+  const endpointsUrl = entry?.component_output_url;
 
   // mcp_servers_under_test_valid
   try {
-    endpoints = fetchJson(MCP_SERVERS_URL);
+    endpoints = fetchJson(endpointsUrl);
     results.push(pass("mcp_servers_under_test_valid"));
   } catch {
     results.push(fail("mcp_servers_under_test_valid", "not valid JSON or not accessible"));
@@ -274,8 +275,8 @@ function pushReport(report) {
 
 // --- main -------------------------------------------------------------------
 
-const discoverability = checkDiscoverability();
-const { results: completeness, endpoints } = checkCompleteness();
+const { results: discoverability, entry } = checkDiscoverability();
+const { results: completeness, endpoints } = checkCompleteness(entry);
 const endpointChecks = checkEndpoints(endpoints);
 const execution = checkExecution(endpoints);
 
