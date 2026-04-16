@@ -2,7 +2,7 @@
   "description": "Non-latency metadata for every hosting provider evaluated in the MCP server latency benchmark. Covers providers that are in the benchmark, providers not yet added, and providers explicitly excluded. Updated manually as new providers are evaluated.",
   "as_of": "2026-04-16",
   "criteria_explained": {
-    "sources": "List of URLs where the information about this provider was found. Each entry includes the URL and a short description of what was found there.",
+    "sources": "List of URLs where the information about this provider was found. Each entry includes the URL, the date it was consulted (checked_on), and a short description of what was found there. The checked_on date allows readers to verify whether the information has changed since it was recorded.",
     "benchmark_status": "Whether this provider is currently measured in the benchmark ('in_benchmark'), evaluated but not yet deployed ('pending'), or excluded with a reason ('excluded').",
     "credit_card_required": "Whether a credit card is required to create an account and deploy a server. 'account_only' means no CC needed to create the account but CC is needed to deploy. 'yes' means CC is required at some point before a server can run.",
     "agent_native_deployment": "Whether the full deployment process (excluding account creation) can be performed by an agent from the terminal, without any manual action on a web interface. 'yes' means a CLI covers everything. 'partial' means some steps require browser interaction. 'no' means deployment requires the browser.",
@@ -21,7 +21,7 @@
       "free_tier_limit": "100,000 requests per day",
       "agent_native_score": "excellent — no CC, permanent free tier, full CLI deployment",
       "sources": [
-        { "url": "https://developers.cloudflare.com/workers/platform/pricing/", "content": "Free tier limits: 100,000 requests per day" }
+        { "url": "https://developers.cloudflare.com/workers/platform/pricing/", "checked_on": "2026-04-16", "content": "Free tier limits: 100,000 requests per day" }
       ],
       "notes": null
     },
@@ -47,7 +47,7 @@
       "free_tier_limit": "125k serverless function invocations per month",
       "agent_native_score": "good — no CC, CLI available, free tier permanent",
       "sources": [
-        { "url": "https://www.netlify.com/pricing/", "content": "Free tier: 125k serverless function invocations per month" }
+        { "url": "https://www.netlify.com/pricing/", "checked_on": "2026-04-16", "content": "Free tier: 125k serverless function invocations per month" }
       ],
       "notes": null
     },
@@ -73,7 +73,7 @@
       "free_tier_limit": "500,000 function invocations per month",
       "agent_native_score": "unknown — CC requirement to be verified",
       "sources": [
-        { "url": "https://supabase.com/pricing", "content": "Free tier: 500,000 Edge Function invocations per month" }
+        { "url": "https://supabase.com/pricing", "checked_on": "2026-04-16", "content": "Free tier: 500,000 Edge Function invocations per month" }
       ],
       "notes": "CC requirement not yet verified"
     },
@@ -111,7 +111,7 @@
       "free_tier_limit": "Free instance sleeps after 15 minutes of inactivity — cold start on next request",
       "agent_native_score": "partial — no CLI, deploy is triggered by pushing to a connected GitHub repo (agent can do this), but initial setup requires web interface",
       "sources": [
-        { "url": "https://render.com/pricing", "content": "Free tier: web services sleep after 15 minutes of inactivity" }
+        { "url": "https://render.com/pricing", "checked_on": "2026-04-16", "content": "Free tier: web services sleep after 15 minutes of inactivity" }
       ],
       "notes": "The free tier instance sleeps after inactivity. This means latency measurements on Render free tier include cold start time — relevant to our ping frequency analysis."
     },
@@ -127,8 +127,8 @@
       "available_regions": ["Amsterdam", "Ashburn", "Chicago", "Dallas", "Frankfurt", "Johannesburg", "London", "Los Angeles", "Mumbai", "Paris", "San Jose", "São Paulo", "Secaucus", "Singapore", "Stockholm", "Sydney", "Tokyo", "Toronto"],
       "agent_native_score": "CLI excellent but CC is a hard blocker — requires human intervention to add payment before any deployment",
       "sources": [
-        { "url": "https://fly.io/docs/about/free-trial/", "content": "Free trial details: 2 hours of machine runtime or 7 days, whichever comes first. Apps stop running after the trial ends." },
-        { "url": "https://fly.io/docs/about/pricing/", "content": "List of available regions and compute pricing" }
+        { "url": "https://fly.io/docs/about/free-trial/", "checked_on": "2026-04-16", "content": "Free trial details: 2 hours of machine runtime or 7 days, whichever comes first. Apps stop running after the trial ends." },
+        { "url": "https://fly.io/docs/about/pricing/", "checked_on": "2026-04-16", "content": "List of available regions and compute pricing" }
       ],
       "notes": "The fly CLI is one of the best available for agent-native deployments. The only blocker is the payment requirement. Fly.io would be ideal for pingers across multiple regions if cost were not a constraint."
     },
@@ -167,8 +167,8 @@
       "free_tier_limit": "1 published app, automatically goes offline after 30 days. 2GB workspace storage. Daily Agent credits (monthly cap). Monthly credits for databases, object storage, AI integrations.",
       "agent_native_score": "poor — no CLI, browser-only deployment, 30-day limit on free published apps",
       "sources": [
-        { "url": "https://replit.com/pricing", "content": "Pricing comparison page — does NOT mention the 30-day limit on free published apps" },
-        { "url": "https://docs.replit.com/billing/plans/starter", "content": "Starter plan technical documentation — discloses that free published apps go offline after 30 days" }
+        { "url": "https://replit.com/pricing", "checked_on": "2026-04-16", "content": "Pricing comparison page — does NOT mention the 30-day limit on free published apps" },
+        { "url": "https://docs.replit.com/billing/plans/starter", "checked_on": "2026-04-16", "content": "Starter plan technical documentation — discloses that free published apps go offline after 30 days" }
       ],
       "notes": "WARNING: The 30-day limit is not mentioned anywhere on the pricing comparison page (https://replit.com/pricing). It is only disclosed in the technical documentation. A developer who deploys on the free plan will not discover this limit until their app goes offline."
     },
@@ -182,8 +182,8 @@
       "free_tier_limit": "unknown",
       "agent_native_score": "unknown — to be verified",
       "sources": [
-        { "url": "https://github.com/alpic-ai/apps-sdk-template", "content": "Official Alpic MCP server template — uses skybridge framework and alpic deploy CLI" },
-        { "url": "https://developers.openai.com/apps-sdk/deploy", "content": "OpenAI MCP deployment guide — recommends Alpic as a hosting provider" }
+        { "url": "https://github.com/alpic-ai/apps-sdk-template", "checked_on": "2026-04-16", "content": "Official Alpic MCP server template — uses skybridge framework and alpic deploy CLI" },
+        { "url": "https://developers.openai.com/apps-sdk/deploy", "checked_on": "2026-04-16", "content": "OpenAI MCP deployment guide — recommends Alpic as a hosting provider" }
       ],
       "notes": "Alpic has its own CLI (alpic deploy) and runtime (skybridge). Uses TypeScript, not raw Node.js HTTP. CLI not installed on the deployment machine."
     }
