@@ -135,14 +135,15 @@
     },
     {
       "name": "Replit",
-      "benchmark_status": "pending",
-      "credit_card_required": "unknown",
-      "agent_native_deployment": "partial",
-      "deployment_cli": "none — deploys via Replit web interface",
-      "free_tier_type": "unknown",
-      "free_tier_limit": "unknown",
-      "agent_native_score": "unknown — to be verified",
-      "notes": "Replit has no standard CLI for deployment. Deployment is done via the Replit web interface."
+      "benchmark_status": "excluded",
+      "exclusion_reason": "Free plan published apps go offline automatically after 30 days. A benchmark requires servers that stay up permanently. Keeping a Replit app running beyond 30 days requires a paid plan (Core at $18/month).",
+      "credit_card_required": "no for account creation, yes to keep a server running beyond 30 days",
+      "agent_native_deployment": "no",
+      "deployment_cli": "none — deploys via Replit web interface only",
+      "free_tier_type": "trial",
+      "free_tier_limit": "1 published app, automatically goes offline after 30 days. 2GB workspace storage. Daily Agent credits (monthly cap). Monthly credits for databases, object storage, AI integrations.",
+      "agent_native_score": "poor — no CLI, browser-only deployment, 30-day limit on free published apps",
+      "notes": "Source: https://docs.replit.com — Starter plan documentation. Badge 'Made with Replit' visible on all free deployments."
     },
     {
       "name": "Alpic",
