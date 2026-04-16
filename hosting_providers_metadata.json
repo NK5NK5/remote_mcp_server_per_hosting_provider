@@ -153,14 +153,16 @@
     {
       "name": "Azure Container Apps",
       "benchmark_status": "pending",
-      "credit_card_required": "unknown",
+      "credit_card_required": "yes — Azure always requires a credit card or debit card to create an account, even for the free tier",
       "agent_native_deployment": "yes",
       "deployment_cli": "az",
-      "free_tier_type": "unknown",
-      "free_tier_limit": "unknown",
-      "agent_native_score": "unknown — to be verified",
-      "sources": [],
-      "notes": "az CLI not installed on the deployment machine. To be deployed manually or after CLI installation."
+      "free_tier_type": "permanent",
+      "free_tier_limit": "Per subscription per calendar month: first 180,000 vCPU-seconds free, first 360,000 GiB-seconds free, first 2 million HTTP requests free. Resets monthly.",
+      "agent_native_score": "good for deployment — full CLI available. CC is a blocker for account creation but free tier is permanent once account exists.",
+      "sources": [
+        { "url": "https://learn.microsoft.com/en-us/azure/container-apps/billing", "checked_on": "2026-04-16", "content": "Free tier: 180,000 vCPU-seconds, 360,000 GiB-seconds, 2M HTTP requests per subscription per calendar month. No time limit — resets monthly." }
+      ],
+      "notes": "az CLI not installed on the deployment machine. Free tier is identical in volume to Google Cloud Run. CC required to create Azure account."
     },
     {
       "name": "Replit",
@@ -181,17 +183,19 @@
     {
       "name": "Alpic",
       "benchmark_status": "pending",
-      "credit_card_required": "unknown",
+      "credit_card_required": "unknown — not specified on pricing page",
       "agent_native_deployment": "yes",
       "deployment_cli": "alpic",
-      "free_tier_type": "unknown",
-      "free_tier_limit": "unknown",
-      "agent_native_score": "unknown — to be verified",
+      "free_tier_type": "permanent",
+      "free_tier_limit": "10,000 requests per month. 7-day analytics retention. Designed for developers testing MCP servers at small scale.",
+      "free_tier_benchmark_compatibility": "compatible with up to ~27 GCR pingers (27 regions × 12 pings/day = 8,748 req/month). Beyond that, the 10,000 request/month limit is exceeded.",
+      "agent_native_score": "good — dedicated CLI (alpic deploy), permanent free tier sufficient for the benchmark at current pinger count",
       "sources": [
+        { "url": "https://alpic.ai/pricing", "checked_on": "2026-04-16", "content": "Free tier: 10,000 requests/month, 7-day analytics retention. Pro: $30/month for 200,000 requests. CC requirement not mentioned." },
         { "url": "https://github.com/alpic-ai/apps-sdk-template", "checked_on": "2026-04-16", "content": "Official Alpic MCP server template — uses skybridge framework and alpic deploy CLI" },
         { "url": "https://developers.openai.com/apps-sdk/deploy", "checked_on": "2026-04-16", "content": "OpenAI MCP deployment guide — recommends Alpic as a hosting provider" }
       ],
-      "notes": "Alpic has its own CLI (alpic deploy) and runtime (skybridge). Uses TypeScript, not raw Node.js HTTP. CLI not installed on the deployment machine."
+      "notes": "Alpic uses its own CLI (alpic deploy) and runtime (skybridge). Uses TypeScript, not raw Node.js HTTP. CLI not installed on the deployment machine. Free tier sufficient for benchmark as long as total GCR pinger count stays below ~27 regions."
     }
   ]
 }
