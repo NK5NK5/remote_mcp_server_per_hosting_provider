@@ -1,0 +1,159 @@
+{
+  "description": "Non-latency metadata for every hosting provider evaluated in the MCP server latency benchmark. Covers providers that are in the benchmark, providers not yet added, and providers explicitly excluded. Updated manually as new providers are evaluated.",
+  "as_of": "2026-04-16",
+  "criteria_explained": {
+    "benchmark_status": "Whether this provider is currently measured in the benchmark ('in_benchmark'), evaluated but not yet deployed ('pending'), or excluded with a reason ('excluded').",
+    "credit_card_required": "Whether a credit card is required to create an account and deploy a server. 'account_only' means no CC needed to create the account but CC is needed to deploy. 'yes' means CC is required at some point before a server can run.",
+    "agent_native_deployment": "Whether the full deployment process (excluding account creation) can be performed by an agent from the terminal, without any manual action on a web interface. 'yes' means a CLI covers everything. 'partial' means some steps require browser interaction. 'no' means deployment requires the browser.",
+    "free_tier_type": "Type of free offering: 'permanent' (free forever within usage limits), 'trial' (free for a limited time or resource budget, then requires payment), 'none' (no free option).",
+    "free_tier_limit": "The specific limit of the free offering, if any.",
+    "agent_native_score": "Overall assessment of how well this provider fits an agent-native workflow where an agent handles deployment end-to-end without human intervention or payment."
+  },
+  "providers": [
+    {
+      "name": "Cloudflare Workers",
+      "benchmark_status": "in_benchmark",
+      "credit_card_required": "no",
+      "agent_native_deployment": "yes",
+      "deployment_cli": "wrangler",
+      "free_tier_type": "permanent",
+      "free_tier_limit": "100,000 requests per day",
+      "agent_native_score": "excellent — no CC, permanent free tier, full CLI deployment",
+      "notes": null
+    },
+    {
+      "name": "Vercel",
+      "benchmark_status": "in_benchmark",
+      "credit_card_required": "no",
+      "agent_native_deployment": "yes",
+      "deployment_cli": "vercel",
+      "free_tier_type": "permanent",
+      "free_tier_limit": "unknown — request limits not publicly documented in detail",
+      "agent_native_score": "good — no CC, CLI available, free tier permanent",
+      "notes": null
+    },
+    {
+      "name": "Netlify",
+      "benchmark_status": "in_benchmark",
+      "credit_card_required": "no",
+      "agent_native_deployment": "yes",
+      "deployment_cli": "netlify",
+      "free_tier_type": "permanent",
+      "free_tier_limit": "125k serverless function invocations per month",
+      "agent_native_score": "good — no CC, CLI available, free tier permanent",
+      "notes": null
+    },
+    {
+      "name": "Railway",
+      "benchmark_status": "in_benchmark",
+      "credit_card_required": "unknown",
+      "agent_native_deployment": "yes",
+      "deployment_cli": "railway",
+      "free_tier_type": "permanent",
+      "free_tier_limit": "$5 of credit per month on the Hobby plan",
+      "agent_native_score": "unknown — CC requirement to be verified",
+      "notes": "CC requirement not yet verified"
+    },
+    {
+      "name": "Supabase Edge Functions",
+      "benchmark_status": "in_benchmark",
+      "credit_card_required": "unknown",
+      "agent_native_deployment": "yes",
+      "deployment_cli": "supabase",
+      "free_tier_type": "permanent",
+      "free_tier_limit": "500,000 function invocations per month",
+      "agent_native_score": "unknown — CC requirement to be verified",
+      "notes": "CC requirement not yet verified"
+    },
+    {
+      "name": "Fermyon",
+      "benchmark_status": "in_benchmark",
+      "credit_card_required": "unknown",
+      "agent_native_deployment": "yes",
+      "deployment_cli": "spin",
+      "free_tier_type": "unknown",
+      "free_tier_limit": "unknown",
+      "agent_native_score": "unknown — free tier and CC requirement to be verified",
+      "notes": null
+    },
+    {
+      "name": "Val Town",
+      "benchmark_status": "in_benchmark",
+      "credit_card_required": "no",
+      "agent_native_deployment": "partial",
+      "deployment_cli": "none",
+      "free_tier_type": "permanent",
+      "free_tier_limit": "unknown",
+      "agent_native_score": "poor — no CLI, deployment required manual copy-paste on the Val Town web interface",
+      "notes": "At time of deployment, Val Town had no CLI. The server code had to be pasted manually into the Val Town web editor. This blocks fully agent-native workflows."
+    },
+    {
+      "name": "Render",
+      "benchmark_status": "in_benchmark",
+      "credit_card_required": "no",
+      "agent_native_deployment": "partial",
+      "deployment_cli": "none — deploys via GitHub repo connection",
+      "free_tier_type": "permanent",
+      "free_tier_limit": "Free instance sleeps after 15 minutes of inactivity — cold start on next request",
+      "agent_native_score": "partial — no CLI, deploy is triggered by pushing to a connected GitHub repo (agent can do this), but initial setup requires web interface",
+      "notes": "The free tier instance sleeps after inactivity. This means latency measurements on Render free tier include cold start time — relevant to our ping frequency analysis."
+    },
+    {
+      "name": "Fly.io",
+      "benchmark_status": "excluded",
+      "exclusion_reason": "No permanent free tier. Fly.io offers a 2-hour or 7-day trial only, after which a credit card is required to run any app. A benchmark that requires paid infrastructure cannot be reproduced freely by the community.",
+      "credit_card_required": "yes — required to deploy any app beyond the 2h/7-day trial",
+      "agent_native_deployment": "yes",
+      "deployment_cli": "fly",
+      "free_tier_type": "trial",
+      "free_tier_limit": "2 hours of machine runtime or 7 days, whichever comes first",
+      "available_regions": ["Amsterdam", "Ashburn", "Chicago", "Dallas", "Frankfurt", "Johannesburg", "London", "Los Angeles", "Mumbai", "Paris", "San Jose", "São Paulo", "Secaucus", "Singapore", "Stockholm", "Sydney", "Tokyo", "Toronto"],
+      "agent_native_score": "CLI excellent but CC is a hard blocker — requires human intervention to add payment before any deployment",
+      "notes": "The fly CLI is one of the best available for agent-native deployments. The only blocker is the payment requirement. Fly.io would be ideal for pingers across multiple regions if cost were not a constraint."
+    },
+    {
+      "name": "Google Cloud Run",
+      "benchmark_status": "pending",
+      "credit_card_required": "unknown",
+      "agent_native_deployment": "yes",
+      "deployment_cli": "gcloud",
+      "free_tier_type": "unknown",
+      "free_tier_limit": "unknown",
+      "agent_native_score": "unknown — to be verified",
+      "notes": "gcloud CLI not installed on the deployment machine. To be deployed manually or after CLI installation."
+    },
+    {
+      "name": "Azure Container Apps",
+      "benchmark_status": "pending",
+      "credit_card_required": "unknown",
+      "agent_native_deployment": "yes",
+      "deployment_cli": "az",
+      "free_tier_type": "unknown",
+      "free_tier_limit": "unknown",
+      "agent_native_score": "unknown — to be verified",
+      "notes": "az CLI not installed on the deployment machine. To be deployed manually or after CLI installation."
+    },
+    {
+      "name": "Replit",
+      "benchmark_status": "pending",
+      "credit_card_required": "unknown",
+      "agent_native_deployment": "partial",
+      "deployment_cli": "none — deploys via Replit web interface",
+      "free_tier_type": "unknown",
+      "free_tier_limit": "unknown",
+      "agent_native_score": "unknown — to be verified",
+      "notes": "Replit has no standard CLI for deployment. Deployment is done via the Replit web interface."
+    },
+    {
+      "name": "Alpic",
+      "benchmark_status": "pending",
+      "credit_card_required": "unknown",
+      "agent_native_deployment": "yes",
+      "deployment_cli": "alpic",
+      "free_tier_type": "unknown",
+      "free_tier_limit": "unknown",
+      "agent_native_score": "unknown — to be verified",
+      "notes": "Alpic has its own CLI (alpic deploy) and runtime (skybridge). Uses TypeScript, not raw Node.js HTTP. CLI not installed on the deployment machine."
+    }
+  ]
+}
