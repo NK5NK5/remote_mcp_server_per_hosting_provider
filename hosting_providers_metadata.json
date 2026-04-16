@@ -8,7 +8,8 @@
     "agent_native_deployment": "Whether the full deployment process (excluding account creation) can be performed by an agent from the terminal, without any manual action on a web interface. 'yes' means a CLI covers everything. 'partial' means some steps require browser interaction. 'no' means deployment requires the browser.",
     "free_tier_type": "Type of free offering: 'permanent' (free forever within usage limits), 'trial' (free for a limited time or resource budget, then requires payment), 'none' (no free option).",
     "free_tier_limit": "The specific limit of the free offering, if any.",
-    "agent_native_score": "Overall assessment of how well this provider fits an agent-native workflow where an agent handles deployment end-to-end without human intervention or payment."
+    "agent_native_score": "Overall assessment of how well this provider fits an agent-native workflow where an agent handles deployment end-to-end without human intervention or payment.",
+    "zero_to_live_sequence": "Ordered list of steps to go from zero to a live MCP server endpoint. Each step specifies whether it requires a browser (manual) or can be done via CLI (agent-executable). This documents the real adoption cost for a developer or agent starting from scratch."
   },
   "providers": [
     {
@@ -16,12 +17,17 @@
       "benchmark_status": "in_benchmark",
       "credit_card_required": "no",
       "agent_native_deployment": "yes",
-      "deployment_cli": "wrangler",
+      "deployment_cli": "wrangler (via npx, no global install required)",
       "free_tier_type": "permanent",
       "free_tier_limit": "100,000 requests per day",
       "agent_native_score": "excellent — no CC, permanent free tier, full CLI deployment",
+      "zero_to_live_sequence": [
+        { "step": 1, "action": "Create a Cloudflare account", "how": "browser", "url": "https://dash.cloudflare.com/sign-up/workers-and-pages" },
+        { "step": 2, "action": "Scaffold and deploy: npm create cloudflare@latest then npx wrangler deploy", "how": "CLI" }
+      ],
       "sources": [
-        { "url": "https://developers.cloudflare.com/workers/platform/pricing/", "checked_on": "2026-04-16", "content": "Free tier limits: 100,000 requests per day" }
+        { "url": "https://developers.cloudflare.com/workers/platform/pricing/", "checked_on": "2026-04-16", "content": "Free tier limits: 100,000 requests per day" },
+        { "url": "https://developers.cloudflare.com/workers/get-started/guide/", "checked_on": "2026-04-16", "content": "Onboarding sequence: npm create cloudflare → npx wrangler deploy. No CC required." }
       ],
       "notes": null
     },
@@ -33,8 +39,16 @@
       "deployment_cli": "vercel",
       "free_tier_type": "permanent",
       "free_tier_limit": "unknown — request limits not publicly documented in detail",
-      "agent_native_score": "good — no CC, CLI available, free tier permanent",
-      "sources": [],
+      "agent_native_score": "excellent — no CC, permanent free tier, full CLI deployment, native Claude Code plugin available",
+      "zero_to_live_sequence": [
+        { "step": 1, "action": "Create a Vercel account (GitHub OAuth accepted)", "how": "browser", "url": "https://vercel.com/signup" },
+        { "step": 2, "action": "npm i vercel", "how": "CLI" },
+        { "step": 3, "action": "vercel login (opens browser once for OAuth)", "how": "CLI then browser (one-time)" },
+        { "step": 4, "action": "vercel --prod", "how": "CLI" }
+      ],
+      "sources": [
+        { "url": "https://vercel.com/docs/getting-started-with-vercel", "checked_on": "2026-04-16", "content": "Onboarding: vercel login then vercel --prod. No CC required. Claude Code plugin available." }
+      ],
       "notes": null
     },
     {
@@ -45,61 +59,103 @@
       "deployment_cli": "netlify",
       "free_tier_type": "permanent",
       "free_tier_limit": "125k serverless function invocations per month",
-      "agent_native_score": "good — no CC, CLI available, free tier permanent",
+      "agent_native_score": "good — no CC, permanent free tier, full CLI deployment",
+      "zero_to_live_sequence": [
+        { "step": 1, "action": "Create a Netlify account (GitHub OAuth accepted)", "how": "browser", "url": "https://app.netlify.com/signup" },
+        { "step": 2, "action": "npm install -g netlify-cli", "how": "CLI" },
+        { "step": 3, "action": "netlify login (opens browser once for OAuth)", "how": "CLI then browser (one-time)" },
+        { "step": 4, "action": "netlify deploy --prod --dir=./dist", "how": "CLI" }
+      ],
       "sources": [
-        { "url": "https://www.netlify.com/pricing/", "checked_on": "2026-04-16", "content": "Free tier: 125k serverless function invocations per month" }
+        { "url": "https://www.netlify.com/pricing/", "checked_on": "2026-04-16", "content": "Free tier: 125k serverless function invocations per month" },
+        { "url": "https://docs.netlify.com/get-started/", "checked_on": "2026-04-16", "content": "Onboarding: netlify login then netlify deploy. No CC required." }
       ],
       "notes": null
     },
     {
       "name": "Railway",
       "benchmark_status": "in_benchmark",
-      "credit_card_required": "unknown",
+      "credit_card_required": "unknown — not verified",
       "agent_native_deployment": "yes",
       "deployment_cli": "railway",
       "free_tier_type": "permanent",
       "free_tier_limit": "$5 of credit per month on the Hobby plan",
-      "agent_native_score": "unknown — CC requirement to be verified",
-      "sources": [],
-      "notes": "CC requirement not yet verified"
+      "agent_native_score": "good — full CLI deployment, CC requirement to be verified",
+      "zero_to_live_sequence": [
+        { "step": 1, "action": "Create a Railway account (GitHub OAuth accepted)", "how": "browser", "url": "https://railway.com" },
+        { "step": 2, "action": "npm install -g @railway/cli", "how": "CLI" },
+        { "step": 3, "action": "railway login (opens browser once for OAuth)", "how": "CLI then browser (one-time)" },
+        { "step": 4, "action": "railway init", "how": "CLI" },
+        { "step": 5, "action": "railway up", "how": "CLI" },
+        { "step": 6, "action": "railway domain (generate public URL)", "how": "CLI" }
+      ],
+      "sources": [
+        { "url": "https://docs.railway.com/quick-start", "checked_on": "2026-04-16", "content": "Onboarding: railway init then railway up. CC requirement not mentioned in quickstart." }
+      ],
+      "notes": "CC requirement not yet verified. To be confirmed at account creation."
     },
     {
       "name": "Supabase Edge Functions",
       "benchmark_status": "in_benchmark",
-      "credit_card_required": "unknown",
+      "credit_card_required": "unknown — not verified",
       "agent_native_deployment": "yes",
       "deployment_cli": "supabase",
       "free_tier_type": "permanent",
       "free_tier_limit": "500,000 function invocations per month",
-      "agent_native_score": "unknown — CC requirement to be verified",
-      "sources": [
-        { "url": "https://supabase.com/pricing", "checked_on": "2026-04-16", "content": "Free tier: 500,000 Edge Function invocations per month" }
+      "agent_native_score": "good — full CLI deployment, CC requirement to be verified",
+      "zero_to_live_sequence": [
+        { "step": 1, "action": "Create a Supabase account (GitHub OAuth accepted)", "how": "browser", "url": "https://supabase.com/dashboard" },
+        { "step": 2, "action": "npm install -g supabase", "how": "CLI" },
+        { "step": 3, "action": "supabase login (opens browser once for OAuth)", "how": "CLI then browser (one-time)" },
+        { "step": 4, "action": "supabase init", "how": "CLI" },
+        { "step": 5, "action": "supabase functions new my-function", "how": "CLI" },
+        { "step": 6, "action": "supabase link --project-ref YOUR_PROJECT_ID", "how": "CLI" },
+        { "step": 7, "action": "supabase functions deploy my-function", "how": "CLI" }
       ],
-      "notes": "CC requirement not yet verified"
+      "sources": [
+        { "url": "https://supabase.com/pricing", "checked_on": "2026-04-16", "content": "Free tier: 500,000 Edge Function invocations per month" },
+        { "url": "https://supabase.com/docs/guides/functions/quickstart", "checked_on": "2026-04-16", "content": "Onboarding: supabase init → login → link → functions deploy. CC requirement not mentioned." }
+      ],
+      "notes": "CC requirement not yet verified. To be confirmed at account creation."
     },
     {
       "name": "Fermyon",
       "benchmark_status": "in_benchmark",
-      "credit_card_required": "unknown",
+      "credit_card_required": "no — Starter tier is free and requires no credit card, only a GitHub account",
       "agent_native_deployment": "yes",
       "deployment_cli": "spin",
-      "free_tier_type": "unknown",
-      "free_tier_limit": "unknown",
-      "agent_native_score": "unknown — free tier and CC requirement to be verified",
-      "sources": [],
-      "notes": null
+      "free_tier_type": "permanent",
+      "free_tier_limit": "unknown — Starter tier documented as free, specific request limits not found",
+      "agent_native_score": "excellent — no CC, only GitHub account required, permanent free tier, full CLI deployment",
+      "zero_to_live_sequence": [
+        { "step": 1, "action": "Create a GitHub account if not already done", "how": "browser" },
+        { "step": 2, "action": "curl -fsSL https://spinframework.dev/downloads/install.sh | bash", "how": "CLI" },
+        { "step": 3, "action": "spin new (scaffold app from template)", "how": "CLI" },
+        { "step": 4, "action": "spin build", "how": "CLI" },
+        { "step": 5, "action": "spin login (opens browser once, authenticates via GitHub)", "how": "CLI then browser (one-time)" },
+        { "step": 6, "action": "spin deploy", "how": "CLI" }
+      ],
+      "sources": [
+        { "url": "https://spinframework.dev/v3/quickstart", "checked_on": "2026-04-16", "content": "No CC required. Starter tier is free. Only a GitHub account is needed. Full CLI sequence: spin new → spin build → spin login → spin deploy." }
+      ],
+      "notes": "Fermyon is the only provider in the benchmark that requires neither a credit card nor a dedicated account — just a GitHub account. This makes it the most accessible for agent-native workflows."
     },
     {
       "name": "Val Town",
       "benchmark_status": "in_benchmark",
       "credit_card_required": "no",
-      "agent_native_deployment": "partial",
-      "deployment_cli": "none",
+      "agent_native_deployment": "no",
+      "deployment_cli": "none — web editor only",
       "free_tier_type": "permanent",
       "free_tier_limit": "unknown",
-      "agent_native_score": "poor — no CLI, deployment required manual copy-paste on the Val Town web interface",
+      "agent_native_score": "poor — no CLI at time of deployment, code had to be pasted manually in the Val Town web editor",
+      "zero_to_live_sequence": [
+        { "step": 1, "action": "Create a Val Town account", "how": "browser", "url": "https://val.town" },
+        { "step": 2, "action": "Paste server code into the Val Town web editor", "how": "browser — no CLI available" },
+        { "step": 3, "action": "Click Run to publish — generates a live URL", "how": "browser" }
+      ],
       "sources": [],
-      "notes": "At time of deployment, Val Town had no CLI. The server code had to be pasted manually into the Val Town web editor. This blocks fully agent-native workflows."
+      "notes": "At time of deployment (2026), Val Town had no CLI. The server code had to be pasted manually into the Val Town web editor. This blocks fully agent-native workflows. Val Town may have added CLI support since — to be re-verified."
     },
     {
       "name": "Render",
@@ -108,12 +164,18 @@
       "agent_native_deployment": "partial",
       "deployment_cli": "none — deploys via GitHub repo connection",
       "free_tier_type": "permanent",
-      "free_tier_limit": "Free instance sleeps after 15 minutes of inactivity — cold start on next request",
-      "agent_native_score": "partial — no CLI, deploy is triggered by pushing to a connected GitHub repo (agent can do this), but initial setup requires web interface",
-      "sources": [
-        { "url": "https://render.com/pricing", "checked_on": "2026-04-16", "content": "Free tier: web services sleep after 15 minutes of inactivity" }
+      "free_tier_limit": "Free web service sleeps after 15 minutes of inactivity. Cold start on next request.",
+      "agent_native_score": "partial — no CLI. Initial setup requires web interface (connect GitHub repo). Subsequent deployments are triggered by git push (agent can do this).",
+      "zero_to_live_sequence": [
+        { "step": 1, "action": "Create a Render account (GitHub OAuth accepted)", "how": "browser", "url": "https://render.com" },
+        { "step": 2, "action": "Connect GitHub repo and configure build/start commands in the Render dashboard", "how": "browser — one-time setup" },
+        { "step": 3, "action": "git push to the connected branch — triggers automatic deployment", "how": "CLI (all subsequent deployments)" }
       ],
-      "notes": "The free tier instance sleeps after inactivity. This means latency measurements on Render free tier include cold start time — relevant to our ping frequency analysis."
+      "sources": [
+        { "url": "https://render.com/pricing", "checked_on": "2026-04-16", "content": "Free tier: web services sleep after 15 minutes of inactivity" },
+        { "url": "https://render.com/docs/deploy-node-express-app", "checked_on": "2026-04-16", "content": "Onboarding: connect GitHub repo via dashboard, then automatic deploy on git push. No CC required." }
+      ],
+      "notes": "Free tier instance sleeps after inactivity — latency measurements include cold start time. Relevant to the ping frequency analysis in the benchmark."
     },
     {
       "name": "Fly.io",
