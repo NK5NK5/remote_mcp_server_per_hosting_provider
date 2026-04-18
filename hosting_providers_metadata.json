@@ -259,7 +259,7 @@
         { "url": "https://github.com/alpic-ai/apps-sdk-template", "checked_on": "2026-04-16", "content": "Official Alpic MCP server template — uses skybridge framework and alpic deploy CLI" },
         { "url": "https://developers.openai.com/apps-sdk/deploy", "checked_on": "2026-04-16", "content": "OpenAI MCP deployment guide — recommends Alpic as a hosting provider" }
       ],
-      "notes": "Alpic uses its own CLI (alpic deploy) and runtime (skybridge). Uses TypeScript, not raw Node.js HTTP. CLI not installed on the deployment machine. Free tier sufficient for benchmark as long as total GCR pinger count stays below ~27 regions."
+      "notes": "Alpic uses its own CLI (alpic deploy) and runtime (skybridge). Uses TypeScript, not raw Node.js HTTP. Free tier sufficient for benchmark as long as total GCR pinger count stays below ~27 regions."
     }
   ]
 }
