@@ -4,6 +4,9 @@
   "criteria_explained": {
     "sources": "List of URLs where the information about this provider was found. Each entry includes the URL, the date it was consulted (checked_on), and a short description of what was found there. The checked_on date allows readers to verify whether the information has changed since it was recorded.",
     "benchmark_status": "Whether this provider is currently measured in the benchmark ('in_benchmark'), evaluated but not yet deployed ('pending'), or excluded with a reason ('excluded').",
+    "free_usage_permanent": "true if the provider offers free usage with no time limit. A trial (limited days or credits) is false. This is the key distinction: a developer can use the provider indefinitely for free within usage limits.",
+    "no_credit_card": "true if the provider allows account creation and server deployment without ever entering a credit card. false means a CC is required at some point before a server can run. null means not yet verified.",
+    "agent_deployable_100pct": "true if an agent (or developer) can deploy and redeploy a server entirely from the terminal, without any manual action on a web interface. false means at least one step requires clicking in a browser (e.g. web-only code editor, dashboard-only initial setup). null means not yet verified.",
     "credit_card_required": "Whether a credit card is required to create an account and deploy a server. 'account_only' means no CC needed to create the account but CC is needed to deploy. 'yes' means CC is required at some point before a server can run.",
     "agent_native_deployment": "Whether the full deployment process (excluding account creation) can be performed by an agent from the terminal, without any manual action on a web interface. 'yes' means a CLI covers everything. 'partial' means some steps require browser interaction. 'no' means deployment requires the browser.",
     "free_tier_type": "Type of free offering: 'permanent' (free forever within usage limits), 'trial' (free for a limited time or resource budget, then requires payment), 'none' (no free option).",
@@ -14,6 +17,9 @@
   "providers": [
     {
       "name": "Cloudflare Workers",
+      "free_usage_permanent": true,
+      "no_credit_card": true,
+      "agent_deployable_100pct": true,
       "benchmark_status": "in_benchmark",
       "credit_card_required": "no",
       "agent_native_deployment": "yes",
@@ -33,6 +39,9 @@
     },
     {
       "name": "Vercel",
+      "free_usage_permanent": true,
+      "no_credit_card": true,
+      "agent_deployable_100pct": true,
       "benchmark_status": "in_benchmark",
       "credit_card_required": "no",
       "agent_native_deployment": "yes",
@@ -53,6 +62,9 @@
     },
     {
       "name": "Netlify",
+      "free_usage_permanent": true,
+      "no_credit_card": true,
+      "agent_deployable_100pct": true,
       "benchmark_status": "in_benchmark",
       "credit_card_required": "no",
       "agent_native_deployment": "yes",
@@ -74,12 +86,15 @@
     },
     {
       "name": "Railway",
+      "free_usage_permanent": false,
+      "no_credit_card": null,
+      "agent_deployable_100pct": true,
       "benchmark_status": "in_benchmark",
       "credit_card_required": "unknown — not verified",
       "agent_native_deployment": "yes",
       "deployment_cli": "railway",
-      "free_tier_type": "permanent",
-      "free_tier_limit": "$5 of credit per month on the Hobby plan",
+      "free_tier_type": "trial",
+      "free_tier_limit": "$5 of credits, expires in 7 days or when credits run out — whichever comes first",
       "agent_native_score": "good — full CLI deployment, CC requirement to be verified",
       "zero_to_live_sequence": [
         { "step": 1, "action": "Create a Railway account (GitHub OAuth accepted)", "how": "browser", "url": "https://railway.com" },
@@ -90,12 +105,16 @@
         { "step": 6, "action": "railway domain (generate public URL)", "how": "CLI" }
       ],
       "sources": [
-        { "url": "https://docs.railway.com/quick-start", "checked_on": "2026-04-16", "content": "Onboarding: railway init then railway up. CC requirement not mentioned in quickstart." }
+        { "url": "https://docs.railway.com/quick-start", "checked_on": "2026-04-16", "content": "Onboarding: railway init then railway up. CC requirement not mentioned in quickstart." },
+        { "url": "email Railway 'Trial Plan Alert'", "checked_on": "2026-04-19", "content": "Trial expires in 7 days or when credits run out. App paused if not upgraded. Confirms free_tier_type = trial, not permanent." }
       ],
-      "notes": "CC requirement not yet verified. To be confirmed at account creation."
+      "notes": "free_tier_type corrected from 'permanent' to 'trial' on 2026-04-19 based on Railway email: trial expires in 7 days or when $5 credits run out. CC requirement still not verified."
     },
     {
       "name": "Supabase Edge Functions",
+      "free_usage_permanent": true,
+      "no_credit_card": null,
+      "agent_deployable_100pct": true,
       "benchmark_status": "in_benchmark",
       "credit_card_required": "unknown — not verified",
       "agent_native_deployment": "yes",
@@ -120,6 +139,9 @@
     },
     {
       "name": "Fermyon",
+      "free_usage_permanent": true,
+      "no_credit_card": true,
+      "agent_deployable_100pct": true,
       "benchmark_status": "in_benchmark",
       "credit_card_required": "no — Starter tier is free and requires no credit card, only a GitHub account",
       "agent_native_deployment": "yes",
@@ -142,6 +164,9 @@
     },
     {
       "name": "Val Town",
+      "free_usage_permanent": true,
+      "no_credit_card": true,
+      "agent_deployable_100pct": false,
       "benchmark_status": "in_benchmark",
       "credit_card_required": "no",
       "agent_native_deployment": "no",
@@ -159,6 +184,9 @@
     },
     {
       "name": "Render",
+      "free_usage_permanent": true,
+      "no_credit_card": true,
+      "agent_deployable_100pct": false,
       "benchmark_status": "in_benchmark",
       "credit_card_required": "no",
       "agent_native_deployment": "partial",
@@ -179,6 +207,9 @@
     },
     {
       "name": "Fly.io",
+      "free_usage_permanent": false,
+      "no_credit_card": false,
+      "agent_deployable_100pct": true,
       "benchmark_status": "excluded",
       "exclusion_reason": "No permanent free tier. Fly.io offers a 2-hour or 7-day trial only, after which a credit card is required to run any app. A benchmark that requires paid infrastructure cannot be reproduced freely by the community.",
       "credit_card_required": "yes — required to deploy any app beyond the 2h/7-day trial",
@@ -196,6 +227,9 @@
     },
     {
       "name": "Google Cloud Run",
+      "free_usage_permanent": true,
+      "no_credit_card": false,
+      "agent_deployable_100pct": true,
       "benchmark_status": "excluded",
       "exclusion_reason": "Used as the pinger platform for the benchmark. A provider cannot play both roles (pinger and benchmarked MCP server) — doing so would produce artificially low latency due to potential internal Google network routing. Google Cloud Run was chosen as the pinger platform because it is the only free, permanent solution covering all 7 required geographic regions including the Middle East.",
       "role_in_project": "pinger_platform",
@@ -216,6 +250,9 @@
     },
     {
       "name": "Azure Container Apps",
+      "free_usage_permanent": true,
+      "no_credit_card": false,
+      "agent_deployable_100pct": true,
       "benchmark_status": "pending",
       "credit_card_required": "yes — Azure always requires a credit card or debit card to create an account, even for the free tier",
       "agent_native_deployment": "yes",
@@ -230,6 +267,9 @@
     },
     {
       "name": "Replit",
+      "free_usage_permanent": false,
+      "no_credit_card": true,
+      "agent_deployable_100pct": false,
       "benchmark_status": "excluded",
       "exclusion_reason": "Free plan published apps go offline automatically after 30 days. A benchmark requires servers that stay up permanently. Keeping a Replit app running beyond 30 days requires a paid plan (Core at $18/month).",
       "credit_card_required": "no for account creation, yes to keep a server running beyond 30 days",
@@ -246,6 +286,9 @@
     },
     {
       "name": "Alpic",
+      "free_usage_permanent": true,
+      "no_credit_card": null,
+      "agent_deployable_100pct": true,
       "benchmark_status": "pending",
       "credit_card_required": "unknown — not specified on pricing page",
       "agent_native_deployment": "yes",
