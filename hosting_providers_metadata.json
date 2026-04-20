@@ -289,21 +289,21 @@
       "free_usage_permanent": true,
       "no_credit_card": true,
       "agent_deployable_100pct": true,
-      "benchmark_status": "in_benchmark",
-      "credit_card_required": "no — the deployment path used by the coding agent did not request a credit card",
+      "benchmark_status": "excluded",
+      "exclusion_reason": "Alpic acts as an MCP gateway that requires the standard initialize handshake and an mcp-session-id header before tools/list is accepted. The benchmark contract measures tools/list as a single stateless POST, identical across all providers. Adapting the 12 pingers to a stateful MCP session flow would change the measurement for all providers and break comparability. Alpic is therefore excluded until the benchmark either adopts a stateful flow or Alpic supports stateless tools/list.",
+      "credit_card_required": "no — the deployment path tested did not request a credit card",
       "agent_native_deployment": "yes",
       "deployment_cli": "alpic",
       "free_tier_type": "permanent",
-      "free_tier_limit": "10,000 requests per month. 7-day analytics retention. Designed for developers testing MCP servers at small scale.",
-      "free_tier_benchmark_compatibility": "compatible with up to ~27 GCR pingers (27 regions × 12 pings/day = 8,748 req/month). Beyond that, the 10,000 request/month limit is exceeded.",
-      "agent_native_score": "excellent — dedicated CLI (alpic deploy), permanent free tier sufficient for the benchmark at current pinger count, and the full deployment was completed by a coding agent without entering card details",
+      "free_tier_limit": "10,000 requests per month. 7-day analytics retention.",
+      "agent_native_score": "excellent for deployment — dedicated CLI (alpic deploy), permanent free tier, full agent-native deployment verified. The blocker is measurement compatibility, not deployment.",
       "sources": [
         { "url": "https://docs.alpic.ai/pricing/plans", "checked_on": "2026-04-20", "content": "Free plan: $0/mo, 10,000 requests/month, 7-day analytics retention." },
         { "url": "https://alpic.ai/", "checked_on": "2026-04-20", "content": "Alpic is a cloud platform for MCP-based AI apps. It supports one-click deploy, hosting, environments, and scaling for MCP servers." },
         { "url": "https://github.com/alpic-ai/apps-sdk-template", "checked_on": "2026-04-16", "content": "Official Alpic MCP server template — uses skybridge framework and alpic deploy CLI" },
         { "url": "https://developers.openai.com/apps-sdk/deploy", "checked_on": "2026-04-16", "content": "OpenAI MCP deployment guide — recommends Alpic as a hosting provider" }
       ],
-      "notes": "Alpic uses its own CLI (alpic deploy) and supports Node MCP servers through npm projects and explicit streamable HTTP transport. The coding agent deployed the server end to end from the terminal on 2026-04-20. No credit card was requested during account login, project creation, or deployment. The free plan is documented by Alpic as $0 per month, 10,000 requests per month, and 7-day analytics retention. Public MCP endpoint: https://remote-mcp-server-al-739c3a1d.alpic.live/mcp. Runtime caveat observed on 2026-04-20: Alpic acts as an MCP gateway and requires the standard initialize/session flow before tools/list; direct stateless tools/list requests are rejected."
+      "notes": "Verified on 2026-04-20. A Node MCP server was deployed end-to-end by a coding agent with the alpic CLI, no credit card. During measurement attempts, Alpic rejected direct stateless tools/list requests with 'Bad Request: Server not initialized'. The correct flow (initialize → capture mcp-session-id → tools/list with that id) works, but it is not the flow used by the other 8 providers in this benchmark. The Alpic deployment created for this test was torn down to avoid leaving an orphan project."
     },
     {
       "name": "Cerebrium",
