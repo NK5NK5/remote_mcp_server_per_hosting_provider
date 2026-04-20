@@ -1,6 +1,6 @@
 {
   "description": "Non-latency metadata for every hosting provider evaluated in the MCP server latency benchmark. Covers providers that are in the benchmark, providers not yet added, and providers explicitly excluded. Updated manually as new providers are evaluated.",
-  "as_of": "2026-04-19",
+  "as_of": "2026-04-20",
   "criteria_explained": {
     "sources": "List of URLs where the information about this provider was found. Each entry includes the URL, the date it was consulted (checked_on), and a short description of what was found there. The checked_on date allows readers to verify whether the information has changed since it was recorded.",
     "benchmark_status": "Whether this provider is currently measured in the benchmark ('in_benchmark'), evaluated but not yet deployed ('pending'), or excluded with a reason ('excluded').",
@@ -87,7 +87,7 @@
     {
       "name": "Railway",
       "free_usage_permanent": false,
-      "no_credit_card": null,
+      "no_credit_card": false,
       "agent_deployable_100pct": true,
       "benchmark_status": "in_benchmark",
       "credit_card_required": "unknown — not verified",
@@ -113,7 +113,7 @@
     {
       "name": "Supabase Edge Functions",
       "free_usage_permanent": true,
-      "no_credit_card": null,
+      "no_credit_card": false,
       "agent_deployable_100pct": true,
       "benchmark_status": "in_benchmark",
       "credit_card_required": "unknown — not verified",
@@ -253,7 +253,7 @@
       "free_usage_permanent": true,
       "no_credit_card": false,
       "agent_deployable_100pct": true,
-      "benchmark_status": "pending",
+      "benchmark_status": "in_benchmark",
       "credit_card_required": "yes — Azure always requires a credit card or debit card to create an account, even for the free tier",
       "agent_native_deployment": "yes",
       "deployment_cli": "az",
@@ -287,22 +287,78 @@
     {
       "name": "Alpic",
       "free_usage_permanent": true,
-      "no_credit_card": null,
+      "no_credit_card": true,
       "agent_deployable_100pct": true,
-      "benchmark_status": "pending",
-      "credit_card_required": "unknown — not specified on pricing page",
+      "benchmark_status": "in_benchmark",
+      "credit_card_required": "no — the deployment path used by the coding agent did not request a credit card",
       "agent_native_deployment": "yes",
       "deployment_cli": "alpic",
       "free_tier_type": "permanent",
       "free_tier_limit": "10,000 requests per month. 7-day analytics retention. Designed for developers testing MCP servers at small scale.",
       "free_tier_benchmark_compatibility": "compatible with up to ~27 GCR pingers (27 regions × 12 pings/day = 8,748 req/month). Beyond that, the 10,000 request/month limit is exceeded.",
-      "agent_native_score": "good — dedicated CLI (alpic deploy), permanent free tier sufficient for the benchmark at current pinger count",
+      "agent_native_score": "excellent — dedicated CLI (alpic deploy), permanent free tier sufficient for the benchmark at current pinger count, and the full deployment was completed by a coding agent without entering card details",
       "sources": [
-        { "url": "https://alpic.ai/pricing", "checked_on": "2026-04-16", "content": "Free tier: 10,000 requests/month, 7-day analytics retention. Pro: $30/month for 200,000 requests. CC requirement not mentioned." },
+        { "url": "https://docs.alpic.ai/pricing/plans", "checked_on": "2026-04-20", "content": "Free plan: $0/mo, 10,000 requests/month, 7-day analytics retention." },
+        { "url": "https://alpic.ai/", "checked_on": "2026-04-20", "content": "Alpic is a cloud platform for MCP-based AI apps. It supports one-click deploy, hosting, environments, and scaling for MCP servers." },
         { "url": "https://github.com/alpic-ai/apps-sdk-template", "checked_on": "2026-04-16", "content": "Official Alpic MCP server template — uses skybridge framework and alpic deploy CLI" },
         { "url": "https://developers.openai.com/apps-sdk/deploy", "checked_on": "2026-04-16", "content": "OpenAI MCP deployment guide — recommends Alpic as a hosting provider" }
       ],
-      "notes": "Alpic uses its own CLI (alpic deploy) and runtime (skybridge). Uses TypeScript, not raw Node.js HTTP. Free tier sufficient for benchmark as long as total GCR pinger count stays below ~27 regions."
+      "notes": "Alpic uses its own CLI (alpic deploy) and supports Python MCP servers through uv projects and explicit streamable HTTP transport. The coding agent deployed the server end to end from the terminal on 2026-04-20. No credit card was requested during account login, project creation, or deployment. The free plan is documented by Alpic as $0 per month, 10,000 requests per month, and 7-day analytics retention. Public MCP endpoint: https://remote-mcp-server-al-150a180d.alpic.live/mcp"
+    },
+    {
+      "name": "Cerebrium",
+      "free_usage_permanent": false,
+      "no_credit_card": true,
+      "agent_deployable_100pct": true,
+      "benchmark_status": "excluded",
+      "credit_card_required": "no for signup; the public homepage advertises $30 free credit and no credit card required",
+      "agent_native_deployment": "yes",
+      "deployment_cli": "cerebrium",
+      "free_tier_type": "trial",
+      "free_tier_limit": "$30 free credit. The public pricing page also exposes a Hobby plan with free account creation and pay-as-you-use compute.",
+      "agent_native_score": "good — CLI deploy, no credit card advertised, but the free credit is finite",
+      "sources": [
+        { "url": "https://www.cerebrium.ai/", "checked_on": "2026-04-20", "content": "$30 free credit - No credit card required. Deploy LLMs, agents and vision models globally." },
+        { "url": "https://docs.mistral.ai/deployment/self-deployment/cerebrium", "checked_on": "2026-04-20", "content": "Mistral recommends Cerebrium as a tool for infrastructure management; setup uses cerebrium login and cerebrium deploy." }
+      ],
+      "notes": "The public docs advertise a finite free credit, not a permanent free allotment."
+    },
+    {
+      "name": "Alibaba Cloud Function Compute",
+      "free_usage_permanent": false,
+      "no_credit_card": false,
+      "agent_deployable_100pct": true,
+      "benchmark_status": "excluded",
+      "credit_card_required": "yes — the account creation flow shown in practice asks for a credit card before the console can be used",
+      "agent_native_deployment": "yes",
+      "deployment_cli": "fc",
+      "free_tier_type": "trial",
+      "free_tier_limit": "First-time users can receive free trial quota for Function Compute across 12 monthly cycles.",
+      "agent_native_score": "excluded — the provider asks for an address and a credit card before the console can be used, so it does not fit the benchmark's no-card criterion",
+      "sources": [
+        { "url": "https://help.aliyun.com/zh/functioncompute/mcp-server", "checked_on": "2026-04-20", "content": "Function Compute can host custom MCP services. The page documents template-based one-click deployment and remote MCP support." },
+        { "url": "https://help.aliyun.com/document_detail/2927204.html", "checked_on": "2026-04-20", "content": "First-time Function Compute users can claim free trial quota. The trial is granted for 12 monthly cycles." }
+      ],
+      "notes": "This provider was evaluated and then excluded. The official offering is a time-limited free trial quota. In practice, account creation asks for an email address, a password, phone verification, a physical address, and a credit card before access to the console is usable. The account cancellation flow is only available in Chinese."
+    },
+    {
+      "name": "Tencent CloudBase",
+      "free_usage_permanent": false,
+      "no_credit_card": null,
+      "agent_deployable_100pct": true,
+      "benchmark_status": "pending",
+      "credit_card_required": "unknown — the consulted CloudBase pages mention free trials but do not state the account payment requirement",
+      "agent_native_deployment": "yes",
+      "deployment_cli": "cloudbase-mcp",
+      "free_tier_type": "trial",
+      "free_tier_limit": "Free tier is granted every month during the first three months after SCF activation. It includes 1,000,000 event-triggered invocations, 1,000,000 HTTP-triggered invocations, 1,000,000 GB of resource usage, and 2 GB of outbound traffic per month.",
+      "agent_native_score": "good — the official CloudBase MCP page documents one-click deployment to Tencent Cloud development platform and remote SSE access",
+      "sources": [
+        { "url": "https://tcb.cloud.tencent.com/mcp-server/mcp-tcb", "checked_on": "2026-04-20", "content": "CloudBase supports one-click deployment of MCP servers to Tencent Cloud development platform with remote SSE access." },
+        { "url": "https://intl.cloud.tencent.com/products/tcb", "checked_on": "2026-04-20", "content": "CloudBase is a cloud-native integrated development platform and the product page says free trials are available for new users." },
+        { "url": "https://intl.cloud.tencent.com/document/product/583/12282", "checked_on": "2026-04-20", "content": "Serverless Cloud Function free tier is granted for the first three months after activation, then switches to a basic package tier." }
+      ],
+      "notes": "This is the Tencent candidate that most directly matches MCP server deployment in the official docs. The free tier is time-limited: it lasts for the first three months after activation, then the service changes to a paid basic package tier unless usage is zero."
     }
   ]
 }
